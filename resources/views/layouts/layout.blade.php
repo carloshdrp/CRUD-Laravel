@@ -16,11 +16,13 @@
 <body class="overflow-x-hidden">
 <nav class="bg-white w-screen py-2 fixed transition-all shadow-md z-10">
     <div class="wrapper flex justify-between items-center">
-        <p class="logo">ArtList</p>
+        <x-application-logo />
         <ul class="link-wrapper">
             <li><a href="/">Início</a></li>
             <li><a href="/catalogo">Catálogo</a></li>
+            @auth
             <li><a href="/gerenciar">Gerenciar</a></li>
+            @endauth
         </ul>
         @auth
         <div class="flex items-center">
@@ -57,7 +59,7 @@ topFunction()" id="topBtn" title="Ir ao topo">
     </svg>
 </button>
 
-<footer class="bg-white">
+<footer class="bg-neutral-100 py-2">
     <div class="wrapper grid grid-cols-3 items-center py-2">
         <p class="logo">ArtList</p>
         <div class="footer-wrapper">
@@ -71,7 +73,7 @@ topFunction()" id="topBtn" title="Ir ao topo">
             <h3>Catálogo</h3>
             <div class="flex flex-col">
                 <a href="/catalogo">Ver agora</a>
-                <a href="/catalogo/new">Novo produto</a>
+                <a href="/catalogo/categories">Categorias</a>
             </div>
         </div>
     </div>

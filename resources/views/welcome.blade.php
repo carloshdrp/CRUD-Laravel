@@ -17,29 +17,37 @@
 <body class="overflow-x-hidden">
 <nav class="bg-white w-screen py-2 fixed transition-all shadow-md z-10">
     <div class="wrapper flex justify-between items-center">
-        <p class="logo">ArtList</p>
+        <x-application-logo />
         <ul class="link-wrapper">
-            <li><a href="/">Início</a></li>
+            <li><a href="#">Início</a></li>
             <li><a href="/catalogo">Catálogo</a></li>
+            @auth
             <li><a href="/gerenciar">Gerenciar</a></li>
+            @endauth
         </ul>
         @auth
-        <div>
-            <a href="/painel"
-               class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Painel</a>
-        </div>
+            <div class="flex items-center">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                            class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Sair</button>
+                </form>
+                <a href="{{ route('profile.edit') }}"
+                   class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Perfil</a>
+
+            </div>
         @else
-        <div>
-            <a href="/login"
-               class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Entrar</a>
-            <a href="/register"
-               class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Registrar</a>
-        </div>
+            <div>
+                <a href="/login"
+                   class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Entrar</a>
+                <a href="/register"
+                   class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Registrar</a>
+            </div>
         @endauth
     </div>
     <div class="wrapper flex items-center">
         <ul class="link-wrapper">
-            <li><a href="#artesanato" class="active bg-red-300 rounded-lg bg-opacity-30">Início</a></li>
+            <li><a href="#artlist" class="active bg-red-300 rounded-lg bg-opacity-30">Início</a></li>
             <li>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -57,7 +65,7 @@
 
 </nav>
 
-<section id="artesanato" class="bg-gradient-to-b from-red-500 to-red-400 text-white occult">
+<section id="artlist" class="bg-gradient-to-b from-red-500 to-red-400 text-white occult">
     <div class="wrapper flex justify-between items-center h-screen">
         <div class="w-1/2">
             <h1 class="text-4xl font-bold drop-shadow-md 2xl:text-6xl -rotate-2 bg-gradient-to-r from-red-400 to-red-300 text-center">Veja o nosso catálogo</h1>
@@ -104,7 +112,7 @@
 <div class="divider occult">
     <div class="wrapper flex justify-between items-center py-4">
         <div class="flex flex-col items-center">
-            <p class="counter">100</p>
+            <p class="counter">{{$itemsCount}}</p>
             <div class="flex">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
@@ -115,7 +123,7 @@
             </div>
         </div>
         <div class="flex flex-col items-center">
-            <p class="counter">100</p>
+            <p class="counter">{{$categoriesCount}}</p>
             <div class="flex">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
@@ -126,7 +134,7 @@
             </div>
         </div>
         <div class="flex flex-col items-center 2xl:py-2">
-            <p class="counter">100</p>
+            <p class="counter">{{$userCount}}</p>
             <div class="flex">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
@@ -166,7 +174,7 @@ topFunction()" id="topBtn" title="Ir ao topo">
     </svg>
 </button>
 
-<footer class="bg-white">
+<footer class="bg-neutral-100 py-2">
     <div class="wrapper grid grid-cols-3 items-center py-2">
         <p class="logo">ArtList</p>
         <div class="footer-wrapper">
@@ -180,7 +188,7 @@ topFunction()" id="topBtn" title="Ir ao topo">
             <h3>Catálogo</h3>
             <div class="flex flex-col">
                 <a href="/catalogo">Ver agora</a>
-                <a href="/catalogo/new">Novo produto</a>
+                <a href="/catalogo/categories">Categorias</a>
             </div>
         </div>
     </div>

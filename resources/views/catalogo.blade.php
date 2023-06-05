@@ -14,9 +14,11 @@
                 <img src="/img/ill-2.svg" alt="produto">
             </div>
             <section class="tags-wrapper">
-                <p>tag1</p>
-                <p>tag2</p>
-                <p>tag3</p>
+                <p>Artesanato</p>
+                <p>Pintura</p>
+                <p>Banheiro</p>
+                <p>Banheiro</p>
+                <p>Banheiro</p>
             </section>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, accusamus assumenda cum

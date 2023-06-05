@@ -79,7 +79,7 @@ html{
 }
 
 .footer-wrapper h3 {
-    @apply uppercase 2xl:text-xl font-bold text-red-300 mb-1.5;
+    @apply uppercase 2xl:text-xl font-bold text-red-400 mb-1.5;
 }
 
 .footer-wrapper div a {
@@ -103,11 +103,11 @@ nav > div:hover + div, nav > div + div:hover {
 }
 
 .product-card h2 {
-    @apply text-2xl 2xl:text-4xl font-bold text-center text-red-400 max-h-10 whitespace-nowrap overflow-y-hidden overflow-x-auto;
+    @apply text-2xl 2xl:text-4xl font-bold text-center text-red-400 whitespace-nowrap overflow-y-hidden overflow-x-auto;
 }
 
 .product-card .tags-wrapper {
-    @apply flex flex-wrap items-center justify-center;
+    @apply flex flex-wrap items-center max-h-16 2xl:max-h-20 hover:max-h-none overflow-hidden justify-center;
 }
 
 .product-card .tags-wrapper > p {
