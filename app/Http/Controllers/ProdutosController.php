@@ -10,8 +10,9 @@ class ProdutosController extends Controller
 {
     public function index()
     {
-        return view('dashboard.products');
-    }
+        return view('dashboard.products', data: [
+            'products' => Produtos::all(),
+        ]);    }
 
     public function store(Request $request)
     {
