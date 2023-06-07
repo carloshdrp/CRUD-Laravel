@@ -18,9 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return view('dashboard.index');
+//})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::prefix('dashboard')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', function (){ return view('dashboard.index');})->name('dashboard');
+    Route::get('/users', [\App\Http\Controllers\UserController::class, 'index'])->name('dashboard.users');
+    Route::get('/categories', [\App\Http\Controllers\CategoryController::class, 'index'])->name('dashboard.categories');
+    Route::get('/products', [\App\Http\Controllers\ProdutosController::class, 'index'])->name('dashboard.products');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,11 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-//    Route::get('/catalogo', [ProfileController::class, 'index'])->name('catalogo');
-});
-
 Route::get('/catalogo', [CatalogoController::class, 'index'])->name('catalogo');
+
+Route::get('/produto/{id}', [\App\Http\Controllers\ProdutosController::class, 'show'])->name('produto');
 
 
 require __DIR__.'/auth.php';

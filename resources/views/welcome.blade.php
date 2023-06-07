@@ -17,24 +17,56 @@
 <body class="overflow-x-hidden">
 <nav class="bg-white w-screen py-2 fixed transition-all shadow-md z-10">
     <div class="wrapper flex justify-between items-center">
-        <x-application-logo />
+        <x-application-logo/>
         <ul class="link-wrapper">
-            <li><a href="#">Início</a></li>
-            <li><a href="/catalogo">Catálogo</a></li>
-            @auth
-            <li><a href="/gerenciar">Gerenciar</a></li>
-            @endauth
+            <li><a href="#" class="border-b-2 border-red-400">Início</a></li>
+            <li><a href="/catalogo" class="hover:border-b-2 border-red-400">Catálogo</a></li>
         </ul>
         @auth
-            <div class="flex items-center">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit"
-                            class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Sair</button>
-                </form>
-                <a href="{{ route('profile.edit') }}"
-                   class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Perfil</a>
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-lg leading-4 font-medium rounded-md text-white bg-red-400 hover:bg-red-50 hover:border-red-400 hover:border-2 hover:text-red-400 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ Auth::user()->name }}</div>
 
+                            <div class="ml-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Perfil') }}
+                        </x-dropdown-link>
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                             onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Sair') }}
+                            </x-dropdown-link>
+                        </form>
+
+                        <!-- Admin Dashboard -->
+                        <div class="w-full h-0.5 my-1 flex justify-center">
+                            <div class="h-full w-11/12 bg-gray-200 rounded-full"></div>
+                        </div>
+
+                        <x-dropdown-link :href="route('dashboard')">
+                            {{ __('Painel') }}
+                        </x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
             </div>
         @else
             <div>
@@ -49,14 +81,16 @@
         <ul class="link-wrapper">
             <li><a href="#artlist" class="active bg-red-300 rounded-lg bg-opacity-30">Início</a></li>
             <li>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                 </svg>
             </li>
             <li><a href="#produtos" class="bg-red-300 rounded-lg bg-opacity-50">Conheça</a></li>
             <li>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                 </svg>
             </li>
             <li><a href="#contato" class="bg-red-300 rounded-lg bg-opacity-70">Contato</a></li>
@@ -68,7 +102,8 @@
 <section id="artlist" class="bg-gradient-to-b from-red-500 to-red-400 text-white occult">
     <div class="wrapper flex justify-between items-center h-screen">
         <div class="w-1/2">
-            <h1 class="text-4xl font-bold drop-shadow-md 2xl:text-6xl -rotate-2 bg-gradient-to-r from-red-400 to-red-300 text-center">Veja o nosso catálogo</h1>
+            <h1 class="text-4xl font-bold drop-shadow-md 2xl:text-6xl -rotate-2 bg-gradient-to-r from-red-400 to-red-300 text-center">
+                Veja o nosso catálogo</h1>
             <p class="text-xl 2xl:text-2xl opacity-80 mt-6">
                 Cada item que você irá encontrar exibe um toque autêntico que reflete a individualidade e a maestria
                 dos artesãos talentosos por trás deles.
@@ -149,14 +184,19 @@
 
 <section id="contato" class="occult">
     <div class="wrapper flex flex-col justify-center items-center h-screen">
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-red-200 to-red-100 text-neutral-800 px-10 2xl:text-6xl -rotate-2 shadow-lg">Estamos aqui para ajudar!</h1>
+        <h2 class="text-4xl font-bold bg-gradient-to-r from-red-200 to-red-100 text-neutral-800 px-10 2xl:text-6xl -rotate-2 shadow-lg">
+            Estamos aqui para ajudar!</h2>
         <div>
             <p class="text-xl 2xl:text-2xl opacity-80 mt-6">
                 Entre em contato com nossa equipe! Estamos prontos e ansiosos para te ajudar em qualquer
                 necessidade.
             </p>
-            <a href="mailto:contato@artlist.com" class="text-xl 2xl:text-2xl opacity-80 text-red-500 underline w-fit flex items-center mt-4">Enviar email <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 ml-2 2xl:w-8 2xl:h-8 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            <a href="mailto:contato@artlist.com"
+               class="text-xl 2xl:text-2xl opacity-80 text-red-500 underline w-fit flex items-center mt-4">Enviar email
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 ml-2 2xl:w-8 2xl:h-8 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
                 </svg>
             </a>
         </div>
@@ -169,8 +209,9 @@
     document.documentElement.scrollTop = 0;
 }
 topFunction()" id="topBtn" title="Ir ao topo">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+         class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"/>
     </svg>
 </button>
 

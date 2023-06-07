@@ -18,30 +18,60 @@
     <div class="wrapper flex justify-between items-center">
         <x-application-logo />
         <ul class="link-wrapper">
-            <li><a href="/">Início</a></li>
-            <li><a href="/catalogo">Catálogo</a></li>
-            @auth
-            <li><a href="/gerenciar">Gerenciar</a></li>
-            @endauth
+            <li><a href="/" class="hover:border-b-2 border-red-400">Início</a></li>
+            @if(request()->routeIs('catalogo'))
+                <li><a href="{{ route('catalogo') }}/#" class="border-b-2 border-red-400">Catálogo</a></li>
+            @else<li><a href="/catalogo" class="hover:border-b-2 border-red-400">Catálogo</a></li>@endif
         </ul>
         @auth
-        <div class="flex items-center">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
-                        class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Sair</button>
-            </form>
-            <a href="{{ route('profile.edit') }}"
-               class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Perfil</a>
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-lg leading-4 font-medium rounded-md text-white bg-red-400 hover:bg-red-50 hover:border-red-400 hover:border-2 hover:text-red-400 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ Auth::user()->name }}</div>
 
-        </div>
+                            <div class="ml-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Perfil') }}
+                        </x-dropdown-link>
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                             onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Sair') }}
+                            </x-dropdown-link>
+                        </form>
+
+                        <!-- Admin Dashboard -->
+                        <div class="w-full h-0.5 my-1 flex justify-center">
+                            <div class="h-full w-11/12 bg-gray-200 rounded-full"></div>
+                        </div>
+
+                        <x-dropdown-link :href="route('dashboard')">
+                            {{ __('Painel') }}
+                        </x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
+            </div>
         @else
-        <div>
-            <a href="/login"
-               class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Entrar</a>
-            <a href="/register"
-               class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Registrar</a>
-        </div>
+            <div>
+                <a href="/login"
+                   class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Entrar</a>
+                <a href="/register"
+                   class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Registrar</a>
+            </div>
         @endauth
     </div>
 

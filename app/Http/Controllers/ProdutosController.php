@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Produtos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProdutosController extends Controller
 {
     public function index()
     {
-        return Produtos::all();
+        return view('dashboard.products');
     }
 
     public function store(Request $request)
@@ -23,9 +24,15 @@ class ProdutosController extends Controller
         return Produtos::create($request->validated());
     }
 
-    public function show(Produtos $produtos)
+    public function show(Produtos $produtos, $id)
     {
-        return $produtos;
+        $product = DB::table('produtos')->where('id', $id)->first();
+        if(empty($product)){
+            return redirect('/catalogo');
+        }
+        return view('product', [
+            'product' => $product,
+        ]);
     }
 
     public function update(Request $request, Produtos $produtos)
