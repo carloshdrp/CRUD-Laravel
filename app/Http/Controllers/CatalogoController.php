@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\CategoryProduct;
+use App\Models\Produtos;
 use Illuminate\Http\Request;
 
 class CatalogoController extends Controller
 {
     public function index()
     {
-        return view('catalogo');
+        $products = Produtos::paginate(10);
+        return view('catalogo', data: [
+            'products' => $products,
+        ]);
     }
 
     public function create()

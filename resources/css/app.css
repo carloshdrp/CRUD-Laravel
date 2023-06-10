@@ -107,11 +107,11 @@ nav > div:hover + div, nav > div + div:hover {
 }
 
 .product-card .tags-wrapper {
-    @apply flex overflow-hidden min-h-fit;
+    @apply flex overflow-x-auto overflow-y-hidden min-h-fit;
 }
 
 .product-card .tags-wrapper > p {
-    @apply border-2 border-neutral-400 hover:border-neutral-600 px-2 rounded-md hover:text-neutral-600 text-neutral-400 text-sm 2xl:text-lg mr-2 mb-2 w-fit;
+    @apply border-2 border-neutral-400 hover:border-neutral-600 px-2 rounded-md whitespace-nowrap hover:text-neutral-600 text-neutral-400 text-sm 2xl:text-lg mr-2 mb-2 w-fit;
 }
 
 .product-card > p{
@@ -119,13 +119,21 @@ nav > div:hover + div, nav > div + div:hover {
 }
 
 .product-card .info-wrapper {
-    @apply flex justify-between 2xl:text-lg 2xl:mt-1 text-neutral-600;
+    @apply flex justify-center 2xl:text-lg 2xl:mt-1 text-neutral-600;
 }
 
 .product-card .img-wrapper {
-    @apply h-48 2xl:h-56 flex justify-center;
+    @apply h-48 2xl:h-56 flex justify-center mb-2;
 }
 
 .product-card .img-wrapper img {
     @apply h-full object-cover ;
+}
+
+.success-msg {
+    @apply fixed text-lg bottom-8 left-[50%] cursor-pointer transition-all -translate-x-1/2 shadow-md border-2 border-green-400 rounded-lg bg-green-100 text-green-500 py-1 px-5 text-center;
+}
+
+.error-msg {
+    @apply fixed text-lg bottom-8 left-[50%] cursor-pointer transition-all -translate-x-1/2 shadow-md border-2 border-red-400 rounded-lg bg-red-100 text-red-500 py-1 px-5 text-center;
 }

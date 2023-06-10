@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\CategoryProduct;
 use App\Models\Produtos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,22 +14,45 @@ class ProdutosController extends Controller
     {
         return view('dashboard.products', data: [
             'products' => Produtos::all(),
-        ]);    }
+        ]);
+    }
+    public function create()
+    {
+        return view('dashboard.products-form', data: [
+            'products' => Produtos::all(),
+            'tags' => Category::all(),
+            'edit' => false,
+        ]);
+    }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => ['required'],
-            'description' => ['required'],
-            'image' => ['required'],
-        ]);
+        try {
+            $product = new Produtos();
+            $product->title = $request->title;
+            $product->description = $request->description;
 
-        return Produtos::create($request->validated());
+            if ($request->hasFile('formFile')) {
+                $imagem = $request->formFile;
+                $caminhoImagem = $imagem->store('imagens_produtos', 'public');
+                $product->image = 'storage/'.$caminhoImagem;
+            }
+
+            $product->save();
+
+            $selectedTags = $request->input('tags', []);
+
+            $product->categories()->attach($selectedTags);
+
+            return redirect()->route('dashboard.products')->with('success', 'Produto criado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }
     }
 
     public function show(Produtos $produtos, $id)
     {
-        $product = DB::table('produtos')->where('id', $id)->first();
+        $product = Produtos::findOrFail($id);
         if(empty($product)){
             return redirect('/catalogo');
         }
@@ -36,23 +61,43 @@ class ProdutosController extends Controller
         ]);
     }
 
-    public function update(Request $request, Produtos $produtos)
+    public function update(Request $request, Produtos $produtos, $id)
     {
-        $request->validate([
-            'title' => ['required'],
-            'description' => ['required'],
-            'image' => ['required'],
-        ]);
+        try {
+            $product = Produtos::findOrFail($id);
+            $product->title = $request->title;
+            $product->description = $request->description;
 
-        $produtos->update($request->validated());
+            if ($request->hasFile('formFile')) {
+                $imagem = $request->formFile;
+                $caminhoImagem = $imagem->store('imagens_produtos', 'public');
+                $product->image = 'storage/'.$caminhoImagem;
+            }
 
-        return $produtos;
+            $product->save();
+
+            $selectedTags = $request->input('categories', []);
+
+            $product->categories()->sync($selectedTags);
+
+            return redirect()->route('dashboard.products')->with('success', 'Produto alterado com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }
     }
 
-    public function destroy(Produtos $produtos)
+    public function destroy(Produtos $produtos, $id)
     {
-        $produtos->delete();
+        $produtos->where('id', '=', $id)->delete();
 
-        return response()->json();
+        return redirect()->route('dashboard.products')->with('success', 'Produto '.$produtos->title.' removido com sucesso!');
+    }
+
+    public function edit(Produtos $produtos, $id)
+    {
+        return view('dashboard.products-form', data: [
+            'edit' => Produtos::with('categories')->findOrFail($id),
+            'categories' => Category::all(),
+        ]);
     }
 }

@@ -12,4 +12,11 @@ class UserController extends Controller
             'users' => User::all(),
         ]);
     }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('dashboard.users')->with('success', 'Usuário removido com sucesso!');
+    }
 }

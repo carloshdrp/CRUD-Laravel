@@ -32,3 +32,35 @@ window.addEventListener('scroll', () => {
     activeMenuAtCurrentSection();
 });
 
+const message = document.querySelector('#message');
+if(message) {
+    const hidden = () => {
+        setTimeout(() => {
+            message.classList.add('hidden');
+        }, 150);
+    }
+
+    const opacity = () => {
+        message.classList.add('opacity-0');
+        message.classList.remove('opacity-100');
+    }
+
+    setTimeout(() => {
+        opacity();
+        hidden();
+    }, 5000);
+
+    message.addEventListener('click', () => {
+        opacity();
+        hidden();
+    });
+}
+
+const productCards = document.querySelectorAll('.product-card');
+
+for (const productCard of productCards) {
+    productCard.addEventListener('click', () => {
+        const id = productCard.getAttribute('id');
+        window.location = 'http://127.0.0.1:8000/produto/' + id;
+    });
+}

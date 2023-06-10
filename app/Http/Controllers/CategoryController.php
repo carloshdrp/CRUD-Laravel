@@ -9,16 +9,38 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return view('dashboard.categories');
+        return view('dashboard.categories', data: [
+            'categories' => Category::all(),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('dashboard.categories-form', data: [
+            'categories' => Category::all(),
+            'edit' => false,
+        ]);
+    }
+
+    public function edit(Category $category, $id)
+    {
+        return view('dashboard.categories-form', data: [
+            'edit' => Category::where('id', '=', $id)->first(),
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required'],
-        ]);
+        try {
+            $category = new Category();
+            $category->name = $request->name;
+            $category->validate();
+            $category->save();
 
-        return Category::create($request->validated());
+            return redirect()->route('dashboard.categories')->with('success', 'Categoria criada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }
     }
 
     public function show(Category $category)
@@ -26,21 +48,24 @@ class CategoryController extends Controller
         return $category;
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category, $id)
     {
-        $request->validate([
-            'name' => ['required'],
-        ]);
+        try {
+            $category = Category::findOrFail($id);
+            $category->name = $request->name;
+            $category->validate();
+            $category->save();
 
-        $category->update($request->validated());
-
-        return $category;
+            return redirect()->route('dashboard.categories')->with('success', 'Categoria atualizada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
+        }
     }
 
-    public function destroy(Category $category)
+    public function destroy(Category $category, $id)
     {
-        $category->delete();
+        $category->where('id', '=', $id)->delete();
 
-        return response()->json();
+        return redirect()->route('dashboard.categories')->with('success', 'Categoria '.$category->name.' removida com sucesso!');
     }
 }
