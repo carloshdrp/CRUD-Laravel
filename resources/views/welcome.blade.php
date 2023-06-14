@@ -19,8 +19,8 @@
     <div class="wrapper flex justify-between items-center">
         <x-application-logo/>
         <ul class="link-wrapper">
-            <li><a href="#" class="border-b-2 border-red-400">Início</a></li>
-            <li><a href="/catalogo" class="hover:border-b-2 border-red-400">Catálogo</a></li>
+            <li><a href="{{route('welcome')}}" class="border-b-2 border-red-400">Início</a></li>
+            <li><a href="{{route('catalogo')}}" class="hover:border-b-2 border-red-400">Catálogo</a></li>
         </ul>
         @auth
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -70,9 +70,9 @@
             </div>
         @else
             <div>
-                <a href="/login"
+                <a href="{{route('login')}}"
                    class="text-red-400 transition-all hover:text-red-600 hover:cursor-pointer py-1 px-6">Entrar</a>
-                <a href="/register"
+                <a href="{{route('register')}}"
                    class="bg-red-400 text-white p-2 rounded-lg hover:bg-white hover:border-2 hover:border-red-400 hover:text-red-400 transition-all">Registrar</a>
             </div>
         @endauth
@@ -110,7 +110,7 @@
             </p>
         </div>
         <div class="w-1/2 flex flex-col items-center justify-center">
-            <a href="/catalogo"
+            <a href="{{route('catalogo')}}"
                class="w-[250px] text-center py-1.5 bg-white shadow-lg rounded-lg text-red-500 hover:underline text-lg 2xl:text-xl 2xl:w-[400px] mb-4">Ver
                 Agora</a>
             <a href="#contato"
@@ -221,15 +221,14 @@ topFunction()" id="topBtn" title="Ir ao topo">
         <div class="footer-wrapper">
             <h3>Conta</h3>
             <div class="flex flex-col">
-                <a href="/login">Logar</a>
-                <a href="/register">Registrar</a>
+                <a href="{{route('login')}}">Logar</a>
+                <a href="{{route('register')}}">Registrar</a>
             </div>
         </div>
         <div class="footer-wrapper">
             <h3>Catálogo</h3>
             <div class="flex flex-col">
-                <a href="/catalogo">Ver agora</a>
-                <a href="/catalogo/categories">Categorias</a>
+                <a href="{{route('catalogo')}}">Ver agora</a>
             </div>
         </div>
     </div>

@@ -61,6 +61,6 @@ const productCards = document.querySelectorAll('.product-card');
 for (const productCard of productCards) {
     productCard.addEventListener('click', () => {
         const id = productCard.getAttribute('id');
-        window.location = 'http://127.0.0.1:8000/produto/' + id;
+        window.location = 'produto/' + id;
     });
 }
